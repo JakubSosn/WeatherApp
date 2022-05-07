@@ -1,0 +1,37 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.container {
+  margin: auto 15px;
+}
+
+header {
+  font-size: 30px;
+  font-weight: bold;
+  font-family: Arial, Helvetica, sans-serif;
+  text-align: center;
+  margin: 20px auto;
+}
+
+div span {
+  font-size: 22px;
+  font-weight: bold;
+}
+
+main {
+  display: flex;
+  padding-top: 20px;
+}
+
+main div {
+  font-size: 20px;
+  font-family: Arial, Helvetica, sans-serif;
+  padding: 10px;
+  letter-spacing: 1px;
+  flex-grow: 1;
+}
+
+
