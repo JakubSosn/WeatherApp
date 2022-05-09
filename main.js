@@ -18,7 +18,6 @@ const getData = () => {
       throw response
     })
     .then(data => {
-      console.log(data);
       forecastData = data;
     })
     .catch(error => {
@@ -26,58 +25,45 @@ const getData = () => {
     })
 }
 
+const getWeather = (dane) => {
+  const { temperatura, wiatrPrędkość, wiatrKierunek, wiatrKierunekSłownie, opis, zachmurzenie, wschódSłońca, zachódSłońca } = dane;
+  const div = document.createElement('div');
+  div.innerHTML = `
+    <p>Temperatura: ${temperatura} °C</p>
+    <p>Prędkość wiatru: ${wiatrPrędkość} km/h</p>
+    <p>Kierunek wiatru: ${wiatrKierunek}</p>
+    <p>Kierunek wiatru Słownie: ${wiatrKierunekSłownie}</p>
+    <p>Prognoza: ${opis}</p>
+    <p>Zachmurzenie: ${zachmurzenie}%</p>
+    <p>Wschód słońca: ${wschódSłońca}</p>
+    <p>Zachód słońca: ${zachódSłońca}</p>
+  `
+
+  return div
+}
 
 getData();
 
-setTimeout(function() {
+setTimeout(() => {
   city.innerHTML = `Miasto: ${forecastData.miasto}, `;
   update.innerHTML = ` Ostatnia aktualizacja: ${forecastData.aktualizacja}`;
-  
-  const { temperatura, wiatrPrędkość, wiatrKierunek, wiatrKierunekSłownie, opis, zachmurzenie, wschódSłońca, zachódSłońca } = forecastData.teraz;
 
-  getWeather(temperatura, wiatrPrędkość, wiatrKierunek, wiatrKierunekSłownie, opis, zachmurzenie, wschódSłońca, zachódSłońca, weatherNow);
+  weatherNow.appendChild(getWeather(forecastData.teraz))
+
 }, 700)
 
-setTimeout(function() {
-  const { temperatura, wiatrPrędkość, wiatrKierunek, wiatrKierunekSłownie, opis, zachmurzenie, wschódSłońca, zachódSłońca } = forecastData.prognoza.dziś;
-
-  getWeather(temperatura, wiatrPrędkość, wiatrKierunek, wiatrKierunekSłownie, opis, zachmurzenie, wschódSłońca, zachódSłońca, today);
+setTimeout(() => { today.appendChild(getWeather(forecastData.prognoza.dziś));
 }, 2000)
 
-setTimeout(function() {
-  const { temperatura, wiatrPrędkość, wiatrKierunek, wiatrKierunekSłownie, opis, zachmurzenie, wschódSłońca, zachódSłońca } = forecastData.prognoza.jutro;
-
-  getWeather(temperatura, wiatrPrędkość, wiatrKierunek, wiatrKierunekSłownie, opis, zachmurzenie, wschódSłońca, zachódSłońca, tomorrow);
+setTimeout(() => { tomorrow.appendChild(getWeather(forecastData.prognoza.jutro));
 }, 3000)
 
-setTimeout(function() {
-  const { temperatura, wiatrPrędkość, wiatrKierunek, wiatrKierunekSłownie, opis, zachmurzenie, wschódSłońca, zachódSłońca } = forecastData.prognoza.pojutrze;
-
-  getWeather(temperatura, wiatrPrędkość, wiatrKierunek, wiatrKierunekSłownie, opis, zachmurzenie, wschódSłońca, zachódSłońca, dayAfterTomorrow);
+setTimeout(() => { dayAfterTomorrow.appendChild(getWeather(forecastData.prognoza.pojutrze));
 }, 4000)
 
 
 
-const getWeather = (
-  temp, windSpeed, windDirection, windDirectionText, description, cloudy, sunrise, sunset, parent
-  ) => {
-  const div = document.createElement('div');
-  div.innerHTML = `
-    <p>Temperatura: ${temp} °C</p>
-    <p>Prędkość wiatru: ${windSpeed} km/h</p>
-    <p>Kierunek wiatru: ${windDirection}</p>
-    <p>Kierunek wiatru Słownie: ${windDirectionText}</p>
-    <p>Prognoza: ${description}</p>
-    <p>Zachmurzenie: ${cloudy}%</p>
-    <p>Wschód słońca: ${sunrise}</p>
-    <p>Zachód słońca: ${sunset}</p>
-  `
-  if(parent) {
-    parent.appendChild(div)
-  }
 
-  return div
-}
 
 // weatherNow.innerHTML = Object.entries(forecastData.teraz).map(([key, value]) => {
 //   return ` ${key} : ${value} `
