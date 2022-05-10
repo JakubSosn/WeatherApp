@@ -5,47 +5,284 @@
 }
 
 .container {
-  margin: auto 15px;
+  /* background-color: lightcoral; */
+  height: 80vh;
+  width: 60vw;
+  margin: 10vh auto 0;
+  font-family: 'Roboto', sans-serif;
+
+  display: flex;
 }
 
-header {
-  font-size: 30px;
-  font-weight: bold;
-  font-family: Arial, Helvetica, sans-serif;
-  text-align: center;
-  margin: 20px auto;
+.searchBar {
+  background-color: lightblue;
+  flex: 1;
+  margin: 0.5em;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+
 }
 
-#result ul {
+.search {
+  margin-top: 10px;
+}
+
+.search form input {
+  margin-left: 5px;
+  width: 60%;
+}
+
+.search form button {
+  padding: 5px;
+  margin-left: 5px;
+}
+
+#result {
   list-style-type: none;
   padding: 0;
   margin: 0;
+  
 }
 
-#result ul li {
+#result li {
+  margin-left: 5px;
   padding: 5px 0;
 }
 
-#result ul li:hover {
+#result li:hover {
   background-color: #eee;
 }
 
-div span {
-  font-size: 22px;
-  font-weight: bold;
+.showCity {
+  font-size: 24px;
 }
 
-main {
+.showUpdate {
+  font-size: 14px;
+  text-align: center;
+}
+
+.mainContent {
+  background-color: lightblue;
+  flex: 2;
+  margin: 0.5em;
+}
+
+.mainContent h1 {
+  margin-top: 10px;
+  margin-left: 30px;
+  font-size: 30px;
+}
+
+.main1 {
   display: flex;
-  padding-top: 20px;
+  flex-direction: column;
 }
 
-main div {
-  font-size: 20px;
-  font-family: Arial, Helvetica, sans-serif;
-  padding: 10px;
-  letter-spacing: 1px;
-  flex-grow: 1;
+.icotemp {
+  height: 15vh;
+  display: flex;
+  justify-content: space-around;
 }
+
+.icotemp .temp {
+  align-self: center;
+  font-size: 60px;
+}
+
+.main2 {
+  display: flex;
+  flex-direction: column;
+  font-size: 20px;
+  margin-top: 15px;
+  margin-left: 25px;
+  line-height: 35px;
+}
+
+
+.forecastBar {
+  margin: 0.5em;
+  flex: 1;
+  
+  display: flex;
+
+  justify-content: space-between;
+  flex-wrap: wrap;
+
+}
+
+.forecastBar > * {
+  background-color: lightblue;
+  width: 80%;
+  margin-bottom: 0.5em;
+}
+
+h3 {
+  padding: 5px 0 0 10px;
+  cursor: pointer;
+}
+
+.aside {
+  text-align: center;
+  font-size: 16px;
+  display: flex;
+  flex-direction: column;
+}
+
+.icotemp .burza {
+  height: 100px;
+  width: 100px;
+  background-image: url(./img/burza.png);
+  background-size: cover;
+  align-self: center;
+}
+
+.aside .burza {
+  height: 50px;
+  width: 50px;
+  background-image: url(./img/burza.png);
+  background-size: cover;
+  align-self: center;
+}
+
+.icotemp .chmury1 {
+  height: 100px;
+  width: 100px;
+  background-image: url(./img/chmury1.png);
+  background-size: cover;
+  align-self: center;
+}
+
+.aside .chmury1 {
+  height: 50px;
+  width: 50px;
+  background-image: url(./img/chmury1.png);
+  background-size: cover;
+  align-self: center;
+}
+
+.icotemp .chmury2 {
+  height: 100px;
+  width: 100px;
+  background-image: url(./img/chmury2.png);
+  background-size: cover;
+  align-self: center;
+}
+
+.aside .chmury2 {
+  height: 50px;
+  width: 50px;
+  background-image: url(./img/chmury2.png);
+  background-size: cover;
+  align-self: center;
+}
+
+.icotemp .chmury3 {
+  height: 100px;
+  width: 100px;
+  background-image: url(./img/chmury3.png);
+  background-size: cover;
+  align-self: center;
+}
+
+.aside .chmury3 {
+  height: 50px;
+  width: 50px;
+  background-image: url(./img/chmury3.png);
+  background-size: cover;
+  align-self: center;
+}
+
+.icotemp .deszcz1 {
+  height: 100px;
+  width: 100px;
+  background-image: url(./img/deszcz1.png);
+  background-size: cover;
+  align-self: center;
+}
+
+.aside .deszcz1 {
+  height: 50px;
+  width: 50px;
+  background-image: url(./img/deszcz1.png);
+  background-size: cover;
+  align-self: center;
+}
+
+.icotemp .deszcz2 {
+  height: 100px;
+  width: 100px;
+  background-image: url(./img/deszcz2.png);
+  background-size: cover;
+  align-self: center;
+}
+
+.aside .deszcz2 {
+  height: 50px;
+  width: 50px;
+  background-image: url(./img/deszcz2.png);
+  background-size: cover;
+  align-self: center;
+}
+
+.icotemp .mgla {
+  height: 100px;
+  width: 100px;
+  background-image: url(./img/mgla.png);
+  background-size: cover;
+  align-self: center;
+}
+
+.aside .mgla {
+  height: 50px;
+  width: 50px;
+  background-image: url(./img/mgla.png);
+  background-size: cover;
+  align-self: center;
+}
+
+.icotemp .slonce {
+  height: 100px;
+  width: 100px;
+  background-image: url(./img/slonce.png);
+  background-size: cover;
+  align-self: center;
+}
+
+.aside .slonce {
+  height: 50px;
+  width: 50px;
+  background-image: url(./img/slonce.png);
+  background-size: cover;
+  align-self: center;
+}
+
+.icotemp .snieg {
+  height: 100px;
+  width: 100px;
+  background-image: url(./img/snieg.png);
+  background-size: cover;
+  align-self: center;
+}
+
+.aside .snieg {
+  height: 50px;
+  width: 50px;
+  background-image: url(./img/snieg.png);
+  background-size: cover;
+  align-self: center;
+}
+
+/* .windDir {
+  height: 50px;
+  width: 50px;
+  background-image: url(./img/wiatr.png);
+  background-size: cover;
+} */
+
+
 
 

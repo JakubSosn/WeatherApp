@@ -1,13 +1,19 @@
 const dayAfterTomorrow = document.querySelector('.dayAfterTomorrow');
 const btnSubmit = document.querySelector('.btnSubmit');
-const city = document.querySelector('.city');
+const city = document.querySelector('.showCity');
+const header = document.querySelector('.header');
+const h3Now = document.querySelector('.h3Now');
+const h3Today = document.querySelector('.h3Today');
+const h3Tomorrow = document.querySelector('.h3Tomorrow');
+const h3DayAfterTomorrow = document.querySelector('.h3DayAfterTomorrow');
 const inputField = document.getElementById('city');
+const now = document.querySelector('.now');
+const mainDiv = document.querySelector('.mainDiv');
 const ulField = document.getElementById('result');
-const update = document.querySelector('.update');
+const update = document.querySelector('.showUpdate');
 const today = document.querySelector('.today');
 const tomorrow = document.querySelector('.tomorrow');
 const res = document.getElementById('result');
-const weatherNow = document.querySelector('.weatherNow');
 
 const API = 'https://wowapi.pl/pogoda/prognoza?miasto=';
 const searchCityApi = 'https://www.wowapi.pl/pogoda/miasta?szukaj='
@@ -15,7 +21,7 @@ const cityApi = 'https://www.wowapi.pl/pogoda/miasta';
 
 let cities = [];
 let forecastData;
-let choosenCity;
+let choosenCity = 'białystok';
 
 const getCities = () => {
   fetch(cityApi)
@@ -42,6 +48,45 @@ const getChoosenCity = (e) => {
   choosenCity = inputField.value.toLowerCase();
   inputField.value = '';
   startShowingWeather();
+}
+
+const showMainWeather = (dane) => {
+  const { temperatura, wiatrPrędkość, wiatrKierunek, wiatrKierunekSłownie, opis, ikonka, zachmurzenie, wschódSłońca, zachódSłońca } = dane;
+  const div = document.createElement('div');
+  div.className = 'mainWeather';
+  div.innerHTML = `
+    <div class='main1'>
+      <div class='icotemp'>
+      <div class='${ikonka}'></div>
+      <div class='temp'>${temperatura} °C</div>
+    </div>
+    <div class='main2'>
+      <div class='opis'>${opis}</div>
+      <div>
+        <div class='wind'>prędkość wiatru: ${wiatrPrędkość} km/h</div>
+        <div class='windDir'>kierunek wiatru: ${wiatrKierunek}</div>
+        <div class='windDirText'>kierunek wiatru Słownie: ${wiatrKierunekSłownie}</div>
+      </div>
+      <div class='cloaud'>zachmurzenie: ${zachmurzenie}%</div>
+      <div class='sunrise'>wschód słońca: ${wschódSłońca}</div>
+      <div class='sunset'>zachód słońca: ${zachódSłońca}</div>
+    </div>
+    `
+  return div
+}
+
+const showMiniWeather = (dane) => {
+  const { temperatura, ikonka, zachmurzenie} = dane;
+  const div = document.createElement('div');
+  div.innerHTML = `
+    <div class='aside'>
+      <div class='${ikonka}'></div>
+      <div>Temperatura: ${temperatura} °C</div>
+      <div>Zachmurzenie: ${zachmurzenie}%</div>
+    </div>
+  `
+
+  return div
 }
 
 const changeAutoComplete = ({ target }) => {
@@ -71,23 +116,6 @@ const selectItem = ({ target }) => {
   }
 }
 
-const getWeather = (dane) => {
-  const { temperatura, wiatrPrędkość, wiatrKierunek, wiatrKierunekSłownie, opis, zachmurzenie, wschódSłońca, zachódSłońca } = dane;
-  const div = document.createElement('div');
-  div.innerHTML = `
-    <p>Temperatura: ${temperatura} °C</p>
-    <p>Prędkość wiatru: ${wiatrPrędkość} km/h</p>
-    <p>Kierunek wiatru: ${wiatrKierunek}</p>
-    <p>Kierunek wiatru Słownie: ${wiatrKierunekSłownie}</p>
-    <p>Prognoza: ${opis}</p>
-    <p>Zachmurzenie: ${zachmurzenie}%</p>
-    <p>Wschód słońca: ${wschódSłońca}</p>
-    <p>Zachód słońca: ${zachódSłońca}</p>
-  `
-
-  return div
-}
-
 const startShowingWeather = () => {
 
   const getData = () => {
@@ -108,25 +136,25 @@ const startShowingWeather = () => {
   getData();
 
 setTimeout(() => {
-  city.innerHTML = `Miasto: ${forecastData.miasto}, `;
-  update.innerHTML = ` Ostatnia aktualizacja: ${forecastData.aktualizacja}`;
-  weatherNow.appendChild(getWeather(forecastData.teraz))
+  city.innerHTML = `Miasto: ${forecastData.miasto}`;
+  update.innerHTML = `Ostatnia aktualizacja: ${forecastData.aktualizacja}`;
+  mainDiv.appendChild(showMainWeather(forecastData.teraz));
+  now.appendChild(showMiniWeather(forecastData.teraz));
+  today.appendChild(showMiniWeather(forecastData.prognoza.dziś));
+  tomorrow.appendChild(showMiniWeather(forecastData.prognoza.jutro));
+  dayAfterTomorrow.appendChild(showMiniWeather(forecastData.prognoza.pojutrze));
 }, 700)
-
-setTimeout(() => { today.appendChild(getWeather(forecastData.prognoza.dziś));
-}, 1000)
-
-setTimeout(() => { tomorrow.appendChild(getWeather(forecastData.prognoza.jutro));
-}, 1300)
-
-setTimeout(() => { dayAfterTomorrow.appendChild(getWeather(forecastData.prognoza.pojutrze));
-}, 1600)
 }
+
+startShowingWeather()
+
 
 const clearAllDivs = () => {
   city.innerHTML = '';
   update.innerHTML = '';
-  weatherNow.innerHTML = '';
+  header.innerHTML = '';
+  mainDiv.innerHTML = '';
+  now.innerHTML = '';
   today.innerHTML = '';
   tomorrow.innerHTML = '';
   dayAfterTomorrow.innerHTML = '';
@@ -135,6 +163,31 @@ const clearAllDivs = () => {
 inputField.addEventListener('input', changeAutoComplete);
 ulField.addEventListener('click', selectItem)
 btnSubmit.addEventListener('click', getChoosenCity)
+
+h3Now.addEventListener('click', () => {
+  header.innerHTML = 'Teraz';
+  mainDiv.innerHTML = '';
+  mainDiv.appendChild(showMainWeather(forecastData.teraz));
+})
+
+h3Today.addEventListener('click', () => {
+  header.innerHTML = 'Dziś';
+  mainDiv.innerHTML = '';
+  mainDiv.appendChild(showMainWeather(forecastData.prognoza.dziś));
+})
+
+h3Tomorrow.addEventListener('click', () => {
+  header.innerHTML = 'Jutro';
+  mainDiv.innerHTML = '';
+  mainDiv.appendChild(showMainWeather(forecastData.prognoza.jutro));
+})
+
+h3DayAfterTomorrow.addEventListener('click', () => {
+  header.innerHTML = 'Pojutrze';
+  mainDiv.innerHTML = '';
+  mainDiv.appendChild(showMainWeather(forecastData.prognoza.pojutrze));
+})
+
 
 
 

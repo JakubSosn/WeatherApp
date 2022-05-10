@@ -4,26 +4,49 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet"> 
   <link rel="stylesheet" href="style.css">
   <title>WeatherApp</title>
 </head>
 
 <body>
   <div class="container">
-    <header>Twoja prognoza pogody</header>
-    <form autocomplete="off">
-      <input type="text" name="city" id="city">
-      <ul id="result"></ul>
-      <button type="submit" class="btnSubmit">Potwierdzam</button>
-    </form>
-    <div><span class="city"></span><span class="update"></span></div>
-    <main>
-      <div class="weatherNow">Aktualnie</div>
-      <div class=today>Dziś</div>
-      <div class="tomorrow">Jutro</div>
-      <div class="dayAfterTomorrow">Pojutrze</div>
+    <div class="searchBar">
+      <div class="search">
+        <form autocomplete="off">
+          <input type="text" name="city" id="city">
+          <button type="submit" class="btnSubmit">Potwierdzam</button>
+          <ul id="result"></ul>
+        </form>
       </div>
+      <div class="showCity">Miasto</div>
+      <div class="showUpdate">Aktualizacja</div>
+    </div>
+    <main class="mainContent">
+      <h1 class="header"></h1>
+      <div class="mainDiv"></div>
     </main>
+    <div class="forecastBar">
+      <div>
+        <h3 class="h3Now">Teraz</h3>
+        <div class="now"></div>
+      </div>
+      <div>
+        <h3 class="h3Today">Dziś</h3>
+        <div class='today'></div>
+      </div>
+      <div>
+        <h3 class="h3Tomorrow">Jutro</h3>
+        <div class="tomorrow"></div>
+      </div>
+      <div>
+        <h3 class="h3DayAfterTomorrow">Pojutrze</h3>
+        <div class="dayAfterTomorrow"></div>
+      </div>
+    </div>
+    
   </div>
   <script src="main.js"></script>
 </body>
