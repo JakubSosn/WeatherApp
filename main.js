@@ -6,14 +6,15 @@ const h3Now = document.querySelector('.h3Now');
 const h3Today = document.querySelector('.h3Today');
 const h3Tomorrow = document.querySelector('.h3Tomorrow');
 const h3DayAfterTomorrow = document.querySelector('.h3DayAfterTomorrow');
-const inputField = document.getElementById('city');
+const inputField = document.querySelector('#city');
+const loader = document.querySelector('#loader')
 const now = document.querySelector('.now');
 const mainDiv = document.querySelector('.mainDiv');
-const ulField = document.getElementById('result');
+const ulField = document.querySelector('#result');
 const update = document.querySelector('.showUpdate');
 const today = document.querySelector('.today');
 const tomorrow = document.querySelector('.tomorrow');
-const res = document.getElementById('result');
+const res = document.querySelector('#result');
 
 const API = 'https://wowapi.pl/pogoda/prognoza?miasto=';
 const searchCityApi = 'https://www.wowapi.pl/pogoda/miasta?szukaj='
@@ -52,6 +53,7 @@ const getChoosenCity = (e) => {
 
 const showMainWeather = (dane) => {
   const { temperatura, wiatrPrędkość, wiatrKierunek, wiatrKierunekSłownie, opis, ikonka, zachmurzenie, wschódSłońca, zachódSłońca } = dane;
+  loader.classList.remove('visible');
   const div = document.createElement('div');
   div.className = 'mainWeather';
   div.innerHTML = `
@@ -118,6 +120,8 @@ const selectItem = ({ target }) => {
 
 const startShowingWeather = () => {
 
+  loader.classList.add('visible');
+
   const getData = () => {
     fetch(API + choosenCity)
       .then(response => {
@@ -132,10 +136,10 @@ const startShowingWeather = () => {
       .catch(error => {
         console.error('Error fetching data', error)
       })
-  }
-  getData();
-
-setTimeout(() => {
+    }
+    getData();
+    
+  setTimeout(() => {
   city.innerHTML = `Miasto: ${forecastData.miasto}`;
   update.innerHTML = `Ostatnia aktualizacja: ${forecastData.aktualizacja}`;
   mainDiv.appendChild(showMainWeather(forecastData.teraz));
