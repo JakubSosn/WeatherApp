@@ -18,6 +18,7 @@
   background-color: lightblue;
   flex: 1;
   margin: 0.5em;
+  border-radius: 10px;
 
   display: flex;
   flex-direction: column;
@@ -27,17 +28,28 @@
 }
 
 .search {
-  margin-top: 10px;
+  margin-top: 20px;
 }
 
 .search form input {
-  margin-left: 5px;
-  width: 60%;
+  margin-left: 20px;
+  height: 20px;
+  width: 50%;
+  border: 0;
+  border-radius: 2px;
 }
 
 .search form button {
   padding: 5px;
   margin-left: 5px;
+  background-color: white;
+  border: 0;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.search form button:hover {
+  background-color: #eee;
 }
 
 #result {
@@ -48,12 +60,14 @@
 }
 
 #result li {
-  margin-left: 5px;
+  margin-left: 20px;
   padding: 5px 0;
+  cursor: pointer;
 }
 
 #result li:hover {
   background-color: #eee;
+  font-weight: bold;
 }
 
 .showCity {
@@ -69,6 +83,7 @@
   background-color: lightblue;
   flex: 2;
   margin: 0.5em;
+  border-radius: 10px;
 }
 
 .mainContent h1 {
@@ -117,12 +132,21 @@
 .forecastBar > * {
   background-color: lightblue;
   width: 80%;
-  margin-bottom: 0.5em;
+  margin-bottom: 0.5rem;
+  border-radius: 10px;
+}
+
+.forecastBar:nth-last-child(1) {
+  margin-bottom: 0;
 }
 
 h3 {
   padding: 5px 0 0 10px;
   cursor: pointer;
+}
+
+h3:hover {
+  transform: scale(0.9);
 }
 
 .aside {
