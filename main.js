@@ -18,39 +18,43 @@ const res = document.querySelector('#result');
 
 const API = 'https://wowapi.pl/pogoda/prognoza?miasto=';
 const searchCityApi = 'https://www.wowapi.pl/pogoda/miasta?szukaj='
-const cityApi = 'https://www.wowapi.pl/pogoda/miasta';
 
 let cities = [];
 let forecastData;
 let choosenCity = 'białystok';
 
-const getCities = () => {
-  fetch(cityApi)
-    .then(response => {
-      if(response.ok) {
-        return response.json()
-      }
-      throw response
-    })
+// wczytywanie i uzupełnianie pogody dla wybranego miasta, na start choosenCity ma już przypisane miasto
+const startShowingWeather = () => {
+
+  loader.classList.add('visible');
+
+  const getData = async () => {
+    const response = await fetch(API + choosenCity)
+      if(!response.ok) {
+          throw new Error(`cannot fech data ${response.status}`)
+        }
+    let data = response.json();
+    return data;
+  }
+  getData()
     .then(data => {
-      data.forEach(item => {
-        cities.push(item.nazwa);
-      })
+      forecastData = data;
     })
     .catch(error => {
-      console.error('Something went wrong.', error)
+      console.error('Error fetching data', error)
     })
 }
-getCities()
+setTimeout(() => {
+  city.innerHTML = `Miasto: ${forecastData.miasto}`;
+  update.innerHTML = `Ostatnia aktualizacja: ${forecastData.aktualizacja}`;
+  mainDiv.appendChild(showMainWeather(forecastData.teraz));
+  now.appendChild(showMiniWeather(forecastData.teraz));
+  today.appendChild(showMiniWeather(forecastData.prognoza.dziś));
+  tomorrow.appendChild(showMiniWeather(forecastData.prognoza.jutro));
+  dayAfterTomorrow.appendChild(showMiniWeather(forecastData.prognoza.pojutrze));
+}, 700)
 
-const getChoosenCity = (e) => {
-  e.preventDefault();
-  clearAllDivs();
-  choosenCity = inputField.value.toLowerCase();
-  inputField.value = '';
-  startShowingWeather();
-}
-
+// funkcja odpowiadająca za wyświetlenie głównego ( środkowego ) okna z pogodą
 const showMainWeather = (dane) => {
   const { temperatura, wiatrPrędkość, wiatrKierunek, wiatrKierunekSłownie, opis, ikonka, zachmurzenie, wschódSłońca, zachódSłońca } = dane;
   loader.classList.remove('visible');
@@ -77,6 +81,7 @@ const showMainWeather = (dane) => {
   return div
 }
 
+// funkcja obsługująca cztery pomniejsze divy z pogodą
 const showMiniWeather = (dane) => {
   const { temperatura, ikonka, zachmurzenie} = dane;
   const div = document.createElement('div');
@@ -87,11 +92,31 @@ const showMiniWeather = (dane) => {
       <div>Zachmurzenie: ${zachmurzenie}%</div>
     </div>
   `
-
   return div
 }
 
+// autouzupełnianie w locie + potwierdzanie wyboru
 const changeAutoComplete = ({ target }) => {
+
+  const getCitiesInLive = async () => {
+    const response = await fetch(searchCityApi + target.value);
+        if(!response.ok) {
+          throw new Error(`cannot fech data ${response.status}`);
+        }
+    let data = await response.json()
+    return data;
+  }
+  
+  getCitiesInLive()
+    .then(data => {
+      cities = [];
+      data.forEach(item => {
+        cities.push(item.nazwa);
+      })
+    })
+    .catch(error => {
+      console.error('Something went wrong.', error);
+    });
 
   let data = target.value;
   ulField.innerHTML = '';
@@ -118,41 +143,9 @@ const selectItem = ({ target }) => {
   }
 }
 
-const startShowingWeather = () => {
-
-  loader.classList.add('visible');
-
-  const getData = () => {
-    fetch(API + choosenCity)
-      .then(response => {
-        if(response.ok) {
-          return response.json()
-        }
-        throw response
-      })
-      .then(data => {
-        forecastData = data;
-      })
-      .catch(error => {
-        console.error('Error fetching data', error)
-      })
-    }
-    getData();
-    
-  setTimeout(() => {
-  city.innerHTML = `Miasto: ${forecastData.miasto}`;
-  update.innerHTML = `Ostatnia aktualizacja: ${forecastData.aktualizacja}`;
-  mainDiv.appendChild(showMainWeather(forecastData.teraz));
-  now.appendChild(showMiniWeather(forecastData.teraz));
-  today.appendChild(showMiniWeather(forecastData.prognoza.dziś));
-  tomorrow.appendChild(showMiniWeather(forecastData.prognoza.jutro));
-  dayAfterTomorrow.appendChild(showMiniWeather(forecastData.prognoza.pojutrze));
-}, 700)
-}
-
 startShowingWeather()
 
-
+// funckja czyszcząca wszytskie divy aby ponownie wczytywane dane nie nakładały się na siebie
 const clearAllDivs = () => {
   city.innerHTML = '';
   update.innerHTML = '';
@@ -162,6 +155,15 @@ const clearAllDivs = () => {
   today.innerHTML = '';
   tomorrow.innerHTML = '';
   dayAfterTomorrow.innerHTML = '';
+}
+
+// przypisanie wyszukanego miasta i uruchomienie pobrania danych dla tego miasta
+const getChoosenCity = (e) => {
+  e.preventDefault();
+  clearAllDivs();
+  choosenCity = inputField.value.toLowerCase();
+  inputField.value = '';
+  startShowingWeather();
 }
 
 inputField.addEventListener('input', changeAutoComplete);
@@ -174,6 +176,7 @@ h3Now.addEventListener('click', () => {
   mainDiv.appendChild(showMainWeather(forecastData.teraz));
 })
 
+// obsługa prawych przycisków i wczytanie danych prognozy pogody
 h3Today.addEventListener('click', () => {
   header.innerHTML = 'Dziś';
   mainDiv.innerHTML = '';
@@ -193,17 +196,10 @@ h3DayAfterTomorrow.addEventListener('click', () => {
 })
 
 
+// old one - pobranie od razu wszytskich miast z endpointa do zmiennej cities
 
-
-// const showResultsOfCitys = ({ target }) => {
-
-//   const res = document.getElementById('result');
-//   res.innerHTML = '';
-//   if ( target.value === '') {
-//     return;
-//   }
-//   let listOfCitys = '';
-//   fetch(`${searchCityApi}${target.value}`)
+// const getCities = () => {
+//   fetch(cityApi)
 //     .then(response => {
 //       if(response.ok) {
 //         return response.json()
@@ -212,34 +208,28 @@ h3DayAfterTomorrow.addEventListener('click', () => {
 //     })
 //     .then(data => {
 //       data.forEach(item => {
-//         listOfCitys += `<li>${item.nazwa}</li>`;
+//         cities.push(item.nazwa);
 //       })
-//       res.innerHTML = `<ul class='cityList'>${listOfCitys}</ul>`;
-//       return true;
 //     })
 //     .catch(error => {
-//       console.error('Something went wrong.', error);
-//       return false;
+//       console.error('Something went wrong.', error)
 //     })
-
-    
 // }
 
-// inputField.addEventListener('input', showResultsOfCitys)
+// old one - bez async / await
 
-
-
-// async function getData() {
-//   try {
-//     const response = await fetch(API)
-//     if (!response.ok) {
-//       throw new Error(`HTTP error: ${response.status}`)
-//     }
-//     const json = await response.json();
-//     return json;
+// const getData = () => {
+//   fetch(API + choosenCity)
+//     .then(response => {
+//       if(response.ok) {
+//         return response.json()
+//       }
+//       throw response
+//     })
+//     .then(data => {
+//       forecastData = data;
+//     })
+//     .catch(error => {
+//       console.error('Error fetching data', error)
+//     })
 //   }
-
-//   catch(error) {
-//     console.error(`Error fetching data ${error}`);
-//   }
-// }
