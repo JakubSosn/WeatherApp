@@ -70,8 +70,11 @@ const showMainWeather = (dane) => {
       <div class='opis'>${opis}</div>
       <div>
         <div class='wind'>prędkość wiatru: ${wiatrPrędkość} km/h</div>
-        <div class='windDir'>kierunek wiatru: ${wiatrKierunek}</div>
-        <div class='windDirText'>kierunek wiatru Słownie: ${wiatrKierunekSłownie}</div>
+        <div class='windBox'>
+          <div>kierunek</div>
+          <div class='windDir'></div>
+          <div class='windDirText'>${wiatrKierunekSłownie}</div>
+        </div>
       </div>
       <div class='cloaud'>zachmurzenie: ${zachmurzenie}%</div>
       <div class='sunrise'>wschód słońca: ${wschódSłońca}</div>
@@ -112,6 +115,13 @@ const changeAutoComplete = ({ target }) => {
       cities = [];
       data.forEach(item => {
         cities.push(item.nazwa);
+
+        let data = target.value;
+        ulField.innerHTML = '';
+        if (data.length) {
+          let autoCompleteValues = autoComplete(data);
+          autoCompleteValues.forEach(value => { addItem(value); })
+        }     
       })
     })
     .catch(error => {
@@ -166,33 +176,38 @@ const getChoosenCity = (e) => {
   startShowingWeather();
 }
 
+
 inputField.addEventListener('input', changeAutoComplete);
 ulField.addEventListener('click', selectItem)
 btnSubmit.addEventListener('click', getChoosenCity)
 
+// obsługa prawych przycisków i wczytanie danych prognozy pogody
 h3Now.addEventListener('click', () => {
   header.innerHTML = 'Teraz';
   mainDiv.innerHTML = '';
   mainDiv.appendChild(showMainWeather(forecastData.teraz));
+  document.querySelector('.windDir').style.transform = `rotate(${forecastData.teraz.wiatrKierunek}deg)`;
 })
 
-// obsługa prawych przycisków i wczytanie danych prognozy pogody
 h3Today.addEventListener('click', () => {
   header.innerHTML = 'Dziś';
   mainDiv.innerHTML = '';
   mainDiv.appendChild(showMainWeather(forecastData.prognoza.dziś));
+  document.querySelector('.windDir').style.transform = `rotate(${forecastData.prognoza.dziś.wiatrKierunek}deg)`;
 })
 
 h3Tomorrow.addEventListener('click', () => {
   header.innerHTML = 'Jutro';
   mainDiv.innerHTML = '';
   mainDiv.appendChild(showMainWeather(forecastData.prognoza.jutro));
+  document.querySelector('.windDir').style.transform = `rotate(${forecastData.prognoza.jutro.wiatrKierunek}deg)`;
 })
 
 h3DayAfterTomorrow.addEventListener('click', () => {
   header.innerHTML = 'Pojutrze';
   mainDiv.innerHTML = '';
   mainDiv.appendChild(showMainWeather(forecastData.prognoza.pojutrze));
+  document.querySelector('.windDir').style.transform = `rotate(${forecastData.prognoza.pojutrze.wiatrKierunek}deg)`;
 })
 
 

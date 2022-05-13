@@ -136,6 +136,18 @@
   margin-bottom: 15px;
 }
 
+.windDir {
+  height: 30px;
+  width: 30px;
+  background-image: url(./img/wiatr.png);
+  background-size: cover;
+}
+
+.windBox {
+  display: flex;
+  gap: 5px;
+}
+
 .forecastBar {
   margin: 0.5em;
   flex: 1;
@@ -318,12 +330,6 @@ h3:hover {
   align-self: center;
 }
 
-/* .windDir {
-  height: 50px;
-  width: 50px;
-  background-image: url(./img/wiatr.png);
-  background-size: cover;
-} */
 
 
 
