@@ -24,27 +24,29 @@ let forecastData;
 let choosenCity = 'białystok';
 
 // wczytywanie i uzupełnianie pogody dla wybranego miasta, na start choosenCity ma już przypisane miasto
-const startShowingWeather = () => {
+const startShowingWeather = () => { 
 
   loader.classList.add('visible');
 
   const getData = async () => {
-    const response = await fetch(API + choosenCity)
-      if(!response.ok) {
-          throw new Error(`cannot fech data ${response.status}`)
-        }
-    let data = response.json();
-    return data;
-  }
-  getData()
-    .then(data => {
-      forecastData = data;
-    })
-    .catch(error => {
-      console.error('Error fetching data', error)
-    })
+      const response = await fetch(API + choosenCity)
+        if(!response.ok) {
+            throw new Error(`cannot fech data ${response.status}`)
+          }
+      let data = response.json();
+      return data;
+    }
+    getData()
+      .then(data => {
+        forecastData = data;
+        showData();
+      })
+      .catch(error => {
+        console.error('Error fetching data', error)
+      })
 }
-setTimeout(() => {
+
+const showData = () => {
   city.innerHTML = `Miasto: ${forecastData.miasto}`;
   update.innerHTML = `Ostatnia aktualizacja: ${forecastData.aktualizacja}`;
   mainDiv.appendChild(showMainWeather(forecastData.teraz));
@@ -52,7 +54,7 @@ setTimeout(() => {
   today.appendChild(showMiniWeather(forecastData.prognoza.dziś));
   tomorrow.appendChild(showMiniWeather(forecastData.prognoza.jutro));
   dayAfterTomorrow.appendChild(showMiniWeather(forecastData.prognoza.pojutrze));
-}, 700)
+}
 
 // funkcja odpowiadająca za wyświetlenie głównego ( środkowego ) okna z pogodą
 const showMainWeather = (dane) => {
@@ -171,7 +173,9 @@ const clearAllDivs = () => {
 const getChoosenCity = (e) => {
   e.preventDefault();
   clearAllDivs();
+  console.log('getChoosenCity przed' + choosenCity)
   choosenCity = inputField.value.toLowerCase();
+  console.log('getChoosenCity po' + choosenCity)
   inputField.value = '';
   startShowingWeather();
 }
@@ -248,3 +252,20 @@ h3DayAfterTomorrow.addEventListener('click', () => {
 //       console.error('Error fetching data', error)
 //     })
 //   }
+
+// const getData = async () => {
+//   const response = await fetch(API + choosenCity)
+//     if(!response.ok) {
+//         throw new Error(`cannot fech data ${response.status}`)
+//       }
+//   let data = response.json();
+//   return data;
+// }
+// getData()
+//   .then(data => {
+//     console.log(data)
+//     forecastData = data;
+//   })
+//   .catch(error => {
+//     console.error('Error fetching data', error)
+  // })
