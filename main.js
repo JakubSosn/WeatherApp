@@ -16,8 +16,10 @@ const today = document.querySelector('.today');
 const tomorrow = document.querySelector('.tomorrow');
 const res = document.querySelector('#result');
 
-const API = 'https://wowapi.pl/pogoda/prognoza?miasto=';
-const searchCityApi = 'https://www.wowapi.pl/pogoda/miasta?szukaj='
+const API = 'https://weather-api-alpha.herokuapp.com/pogoda/prognoza?miasto=';
+// const API = 'https://wowapi.pl/pogoda/prognoza?miasto=';
+const searchCityApi = 'https://weather-api-alpha.herokuapp.com/pogoda/miasta?szukaj='
+// const searchCityApi = 'https://www.wowapi.pl/pogoda/miasta?szukaj='
 
 let cities = [];
 let forecastData;
@@ -213,59 +215,3 @@ h3DayAfterTomorrow.addEventListener('click', () => {
   mainDiv.appendChild(showMainWeather(forecastData.prognoza.pojutrze));
   document.querySelector('.windDir').style.transform = `rotate(${forecastData.prognoza.pojutrze.wiatrKierunek}deg)`;
 })
-
-
-// old one - pobranie od razu wszytskich miast z endpointa do zmiennej cities
-
-// const getCities = () => {
-//   fetch(cityApi)
-//     .then(response => {
-//       if(response.ok) {
-//         return response.json()
-//       }
-//       throw response
-//     })
-//     .then(data => {
-//       data.forEach(item => {
-//         cities.push(item.nazwa);
-//       })
-//     })
-//     .catch(error => {
-//       console.error('Something went wrong.', error)
-//     })
-// }
-
-// old one - bez async / await
-
-// const getData = () => {
-//   fetch(API + choosenCity)
-//     .then(response => {
-//       if(response.ok) {
-//         return response.json()
-//       }
-//       throw response
-//     })
-//     .then(data => {
-//       forecastData = data;
-//     })
-//     .catch(error => {
-//       console.error('Error fetching data', error)
-//     })
-//   }
-
-// const getData = async () => {
-//   const response = await fetch(API + choosenCity)
-//     if(!response.ok) {
-//         throw new Error(`cannot fech data ${response.status}`)
-//       }
-//   let data = response.json();
-//   return data;
-// }
-// getData()
-//   .then(data => {
-//     console.log(data)
-//     forecastData = data;
-//   })
-//   .catch(error => {
-//     console.error('Error fetching data', error)
-  // })
